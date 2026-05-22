@@ -30,20 +30,20 @@
 
 ## 支持的检查项
 
-| 资源类型 | 检查内容 | 是否支持自动修复 |
-|---|---|---|
-| Texture | 贴图命名前缀，例如 `T_` | 是 |
-| Texture | Max Size 超过配置上限 | 是 |
-| Texture | Normal 贴图未设置为 Normal Map | 是 |
-| Model | 模型命名前缀，例如 `SM_` / `CH_` | 是 |
-| Model | Scale Factor 不为 1 | 是 |
-| Model | Read/Write Enabled 被开启 | 是 |
-| Model | 材质槽为空 | 否 |
-| Material | Shader 缺失或错误 | 否 |
-| Prefab | 根节点名称与文件名不一致 | 否 |
-| Prefab | 材质槽为空 | 否 |
-| Prefab | Missing Script | 否 |
-| Prefab | Missing Reference | 否 |
+| 资源类型 | 检查内容                         | 是否支持自动修复 |
+| -------- | -------------------------------- | ---------------- |
+| Texture  | 贴图命名前缀，例如 `T_`          | 是               |
+| Texture  | Max Size 超过配置上限            | 是               |
+| Texture  | Normal 贴图未设置为 Normal Map   | 是               |
+| Model    | 模型命名前缀，例如 `SM_` / `CH_` | 是               |
+| Model    | Scale Factor 不为 1              | 是               |
+| Model    | Read/Write Enabled 被开启        | 是               |
+| Model    | 材质槽为空                       | 否               |
+| Material | Shader 缺失或错误                | 否               |
+| Prefab   | 根节点名称与文件名不一致         | 否               |
+| Prefab   | 材质槽为空                       | 否               |
+| Prefab   | Missing Script                   | 否               |
+| Prefab   | Missing Reference                | 否               |
 
 ---
 
@@ -70,3 +70,190 @@
 
 ```text
 Assets/Editor/AssetValidationTool/
+```
+
+该工具是 Unity Editor 工具，必须放在 `Editor` 文件夹下。
+
+推荐 Unity 版本：
+
+```
+Unity 2022.x 或更高版本
+```
+
+------
+
+## 使用方式
+
+在 Unity 菜单栏打开工具：
+
+```
+TA Tools > Asset Validation > Open Tool
+```
+
+基本流程：
+
+1. 打开 Asset Validation 工具窗口。
+2. 选择规则配置文件，或让工具自动创建默认配置。
+3. 选择扫描范围：选中资源或整个项目。
+4. 点击 `Scan` 开始扫描。
+5. 查看 Error / Warning / Info 检查结果。
+6. 对支持修复的问题点击 `Fix`，或使用 `Auto Fix All Fixable` 批量修复。
+7. 根据需要导出 CSV / JSON 报告。
+
+------
+
+## 规则配置
+
+检查规则通过 `ScriptableObject` 管理。
+
+默认配置路径：
+
+```
+Assets/Editor/AssetValidationTool/Config/DefaultAssetValidationRuleConfig.asset
+```
+
+可配置内容包括：
+
+- 贴图命名前缀
+- 模型命名前缀
+- 模型自动修复默认前缀
+- 最大贴图尺寸
+- Normal 贴图命名关键字
+- 模型 Scale Factor 规则
+- 模型 Read/Write 规则
+- Prefab 缺失引用检查
+- 允许的资源目录范围
+
+------
+
+## 项目架构
+
+项目采用模块化检查器与修复器架构。
+
+```
+EditorWindow
+    ↓
+AssetValidationRunner
+    ↓
+IAssetChecker
+    ↓
+AssetValidationResult
+    ↓
+AssetValidationAutoFixer
+    ↓
+具体 Fixer
+```
+
+主要目录结构：
+
+```
+Assets/Editor/AssetValidationTool/
+├─ Core/
+├─ Config/
+├─ Checkers/
+├─ Fixers/
+├─ Report/
+└─ UI/
+```
+
+各模块职责：
+
+| 目录     | 职责                                           |
+| -------- | ---------------------------------------------- |
+| Core     | 基础数据结构、检查结果、扫描调度、自动修复分发 |
+| Config   | 检查规则配置和默认配置创建                     |
+| Checkers | 贴图、模型、材质、Prefab 的具体检查逻辑        |
+| Fixers   | 命名、贴图导入设置、模型导入设置的安全修复逻辑 |
+| Report   | CSV / JSON 报告导出                            |
+| UI       | Unity EditorWindow 工具界面                    |
+
+------
+
+## 设计思路
+
+本工具将“检查问题”和“修改资源”分离。
+
+`Checker` 只负责发现问题，并生成统一的 `AssetValidationResult`。
+ `Fixer` 只负责处理明确、低风险、可确定的自动修复。
+ `EditorWindow` 只负责显示结果、筛选结果和触发操作。
+
+支持自动修复的问题包括：
+
+- 自动补充贴图命名前缀
+- 自动补充模型命名前缀
+- 限制贴图 Max Size
+- 将 Normal 贴图设置为 Normal Map
+- 将模型 Scale Factor 设置为 1
+- 关闭模型 Read/Write Enabled
+
+不自动修复的问题包括：
+
+- 空材质槽
+- Missing Script
+- Missing Reference
+- Shader 缺失
+- 路径归类问题
+
+这些问题通常需要人工判断，工具只负责定位和报告，避免误改资源。
+
+------
+
+## 技术点
+
+- 使用 `EditorWindow` 搭建 Unity 编辑器工具界面
+- 使用 `AssetDatabase` 实现资源扫描、加载和重命名
+- 使用 `TextureImporter` 检查并修复贴图导入设置
+- 使用 `ModelImporter` 检查并修复模型导入设置
+- 使用 `PrefabUtility.LoadPrefabContents` 安全检查 Prefab 内容
+- 使用 `SerializedObject` 和 `SerializedProperty` 检测 Missing Reference
+- 使用 `ScriptableObject` 管理可配置检查规则
+- 使用 `JsonUtility` 和 CSV 写入实现报告导出
+- 使用接口式 `IAssetChecker` 架构提升扩展性
+
+------
+
+## 示例问题
+
+工具可以检测类似问题：
+
+```
+Wood_BaseColor.png 未以 T_ 开头
+T_Wood_Normal.png 未设置为 Normal Map
+Barrel.fbx 未以 SM_ / CH_ 开头
+SM_Barrel.fbx 的 Scale Factor 不为 1
+SM_Chair.fbx 开启了 Read/Write Enabled
+P_Barrel.prefab 存在 Missing Script
+P_House.prefab 存在 Missing Reference
+```
+
+自动修复后，部分问题会被直接处理，例如：
+
+```
+Wood_BaseColor.png → T_Wood_BaseColor.png
+Barrel.fbx → SM_Barrel.fbx
+Texture Max Size: 4096 → 2048
+Texture Type: Default → Normal Map
+Model Scale Factor: 0.01 → 1
+Read/Write Enabled: true → false
+```
+
+------
+
+## 后续扩展方向
+
+- Shader 白名单检查
+- Audio 导入设置检查
+- Animation Clip 检查
+- 移动端 / PC / 角色 / 场景资源规则预设
+- 检查结果统计面板
+- Markdown 报告导出
+- 接入 CI，在构建前自动进行资源检查
+
+------
+
+## 作品集说明
+
+该项目展示了 Unity Editor 工具开发、资源管线自动化、检查器架构设计和低风险自动修复能力。
+
+项目重点不是单个检查规则，而是模拟真实生产流程中的资源入库检查：
+ 将重复、容易漏掉的人工检查流程工具化，把资源问题前置暴露，并通过可配置规则和报告导出提高团队协作效率。
