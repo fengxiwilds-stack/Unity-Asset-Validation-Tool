@@ -10,15 +10,7 @@
 
 > 可在此处放置工具截图或演示 GIF。
 
-![Tool Window](<img width="754" height="409" alt="Snipaste_2026-05-23_04-53-52" src="https://github.com/user-attachments/assets/e7d8ba90-0c7b-4439-895b-a3c459c408e7" /><img width="287" height="692" alt="Snipaste_2026-05-23_04-56-12" src="https://github.com/user-attachments/assets/43d5cabc-3348-476e-9d00-963b6e3c5360" /><img width="1280" height="764" alt="Snipaste_2026-05-23_05-11-41" src="https://github.com/user-attachments/assets/a30612dc-15fb-4176-a46c-5b0bb4d6446e" /><img width="1280" height="764" alt="Snipaste_2026-05-23_05-12-20" src="https://github.com/user-attachments/assets/ddc36911-a6d3-41cf-aa5b-7d5537ecb8a9" /><img width="1280" height="764" alt="Snipaste_2026-05-23_05-12-53" src="https://github.com/user-attachments/assets/43c34f5b-aad2-4be8-bb3d-0a9f062b4629" /><img width="950" height="198" alt="Snipaste_2026-05-23_05-14-20" src="https://github.com/user-attachments/assets/7b01d0a1-1bf4-4382-bdf3-7d246a4e9bd0" /><img width="816" height="456" alt="Snipaste_2026-05-23_05-15-20" src="https://github.com/user-attachments/assets/ea1c02e2-71ef-4c0b-9eff-7a49f9b20b09" />
-
-
-
-
-
-
-
-)
+<img width="754" height="409" alt="Snipaste_2026-05-23_04-53-52" src="https://github.com/user-attachments/assets/e7d8ba90-0c7b-4439-895b-a3c459c408e7" /><img width="287" height="692" alt="Snipaste_2026-05-23_04-56-12" src="https://github.com/user-attachments/assets/43d5cabc-3348-476e-9d00-963b6e3c5360" /><img width="1280" height="764" alt="Snipaste_2026-05-23_05-11-41" src="https://github.com/user-attachments/assets/a30612dc-15fb-4176-a46c-5b0bb4d6446e" /><img width="1280" height="764" alt="Snipaste_2026-05-23_05-12-20" src="https://github.com/user-attachments/assets/ddc36911-a6d3-41cf-aa5b-7d5537ecb8a9" /><img width="1280" height="764" alt="Snipaste_2026-05-23_05-12-53" src="https://github.com/user-attachments/assets/43c34f5b-aad2-4be8-bb3d-0a9f062b4629" /><img width="950" height="198" alt="Snipaste_2026-05-23_05-14-20" src="https://github.com/user-attachments/assets/7b01d0a1-1bf4-4382-bdf3-7d246a4e9bd0" /><img width="816" height="456" alt="Snipaste_2026-05-23_05-15-20" src="https://github.com/user-attachments/assets/ea1c02e2-71ef-4c0b-9eff-7a49f9b20b09" />
 
 ---
 
